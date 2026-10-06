@@ -93,3 +93,9 @@ if ("IntersectionObserver" in window && !reduce) {
   }, { threshold: 0.6 });
   counters.forEach((c) => cio.observe(c));
 }
+
+// Itinerary dialog
+const itin = document.getElementById("itinerary");
+document.querySelectorAll("[data-open-itinerary]").forEach((b) => b.addEventListener("click", () => itin.showModal()));
+itin.querySelector("[data-close-itinerary]").addEventListener("click", () => itin.close());
+itin.addEventListener("click", (e) => { if (e.target === itin) itin.close(); });
