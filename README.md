@@ -13,4 +13,7 @@ const DELEGATES = [
 ];
 ```
 
+## Itinerary
+The day-by-day plan (shared by NIT Srinagar, tentative) lives in the `#itinerary` section of `index.html`. The original PDF is served from `assets/yuva-sangam-vii-itinerary-nit-srinagar.pdf` — replace that file if a revised version arrives.
+
 Contact: yuvasangam.iitb@gmail.com
