@@ -472,6 +472,7 @@ em { font-style: italic; }
 }
 
 .tg--form { border-bottom: 1.5px solid var(--ink); }
+.tg__form-btn { margin-top: 22px; }
 
 /* ---------- Reveal ---------- */
 .js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
