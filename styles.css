@@ -503,6 +503,25 @@ em { font-style: italic; }
   .tl { padding: 0 0 34px 28px !important; }
   .tl::before { top: 4px; left: -7px; }
   .roles, .glance, .bags, .checklist, .tg__cols { grid-template-columns: 1fr; }
+  .ribbon { font-size: 11px; letter-spacing: .12em; }
+  .ribbon__inner { gap: 2px 10px; padding-top: 8px; padding-bottom: 8px; }
+  .ribbon__dot { display: none; }
+  .nav__inner { height: 64px; }
+  .tg__scroll { overflow: visible; border: 0; border-radius: 0; background: none; }
+  .tg__table { min-width: 0; font-size: 15px; }
+  .tg__table thead { display: none; }
+  .tg__table, .tg__table tbody { display: block; }
+  .tg__table tr {
+    display: grid; grid-template-columns: auto 1fr; gap: 6px 12px;
+    padding: 16px 18px; margin-bottom: 10px;
+    background: #FBF7F0; border: 1px solid var(--line); border-radius: 14px;
+  }
+  .tg__table td { padding: 0; border: 0; }
+  .tg__table td:nth-child(3), .tg__table td:nth-child(4) { grid-column: 1 / -1; }
+  .tg__table td:nth-child(4) { font-size: 13.5px; color: var(--ink-3); }
+  .tg__table td:nth-child(4)::before { content: "Venue · "; font-weight: 700; letter-spacing: .04em; }
+  .tg__alert { padding: 12px 14px; }
+  .glance div { padding: 16px 18px; }
   .day { grid-template-columns: 1fr; gap: 14px; }
   .day__tags { grid-column: auto; }
   .day__date { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
