@@ -319,6 +319,10 @@ em { font-style: italic; }
 .delegate:nth-child(3n+2) .delegate__av { background: var(--chinar); }
 .delegate h3 { font: 500 19px/1.2 var(--serif); }
 .delegate p { font-size: 14px; color: var(--ink-3); margin-top: 4px; }
+.delegate .delegate__no {
+  margin: 0 0 4px; font-size: 11px; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--chinar); font-variant-numeric: tabular-nums;
+}
 
 .flagoff { margin-bottom: clamp(56px, 7vw, 96px); }
 .flagoff figure { margin: 0; }
