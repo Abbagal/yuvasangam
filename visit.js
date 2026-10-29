@@ -1,16 +1,16 @@
 /* ----------------------------------------------------------
    CAMPUS MAP — places marked on the IIT Bombay map.
    Coordinates from OpenStreetMap. Example:
-   { name: "Place", note: "What happens here", lat: 19.13, lng: 72.91 }
+   { name: "Place", label: "Short name", side: "left" | "right", note: "What happens here", lat: 19.13, lng: 72.91 }
    ---------------------------------------------------------- */
 const PLACES = [
-  { name: "IITB Main Gate", note: "Main entrance to the campus", lat: 19.12532, lng: 72.91658 },
-  { name: "Padmavihar Guest House", note: "Meals for faculty and staff", lat: 19.12979, lng: 72.91431 },
-  { name: "Gulmohar", note: "Dining hall, 3rd floor: welcome reception (29 Oct) and gala dinner + cultural night (1 Nov)", lat: 19.12980, lng: 72.91516 },
-  { name: "Convocation Hall", note: "30 Oct: talk by Prof. Juzer Vasi in the Foyer, then Parampara, the cultural evening", lat: 19.13200, lng: 72.91437 },
-  { name: "IRF, New SAC", note: "New Student Activity Centre", lat: 19.13389, lng: 72.91195 },
-  { name: "Hostel 15", note: "Student hostel and mess", lat: 19.13775, lng: 72.91410 },
-  { name: "Hostel 16", note: "Student hostel and mess", lat: 19.13790, lng: 72.91300 },
+  { name: "IITB Main Gate", side: "right", note: "Main entrance to the campus", lat: 19.12532, lng: 72.91658 },
+  { name: "Padmavihar Guest House", label: "Padmavihar", side: "left", note: "Meals for faculty and staff", lat: 19.12979, lng: 72.91431 },
+  { name: "Gulmohar", side: "right", note: "Dining hall, 3rd floor: welcome reception (29 Oct) and gala dinner + cultural night (1 Nov)", lat: 19.12980, lng: 72.91516 },
+  { name: "Convocation Hall", side: "right", note: "30 Oct: talk by Prof. Juzer Vasi in the Foyer, then Parampara, the cultural evening", lat: 19.13200, lng: 72.91437 },
+  { name: "IRF, New SAC", side: "left", note: "New Student Activity Centre", lat: 19.13389, lng: 72.91195 },
+  { name: "Hostel 15", side: "right", note: "Student hostel and mess", lat: 19.13775, lng: 72.91410 },
+  { name: "Hostel 16", side: "left", note: "Student hostel and mess", lat: 19.13790, lng: 72.91300 },
 ];
 
 // Campus boundary (OpenStreetMap relation 8546708), simplified
@@ -36,20 +36,52 @@ const CAMPUS = [[19.12385,72.90864],[19.12457,72.90843],[19.12514,72.90833],[19.
   if (!window.L) return;
   el.innerHTML = "";
 
-  const map = L.map(el, { scrollWheelZoom: false });
+  const map = L.map(el, { scrollWheelZoom: false, zoomControl: false, attributionControl: false });
+  L.control.zoom({ position: "bottomright" }).addTo(map);
+  L.control.attribution({ position: "bottomleft", prefix: false }).addTo(map);
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
 
-  L.polygon(CAMPUS, { color: "#E0701C", weight: 2, dashArray: "6 6", fillColor: "#E0701C", fillOpacity: 0.06, interactive: false }).addTo(map);
+  // Dim everything outside the campus, then outline it
+  const world = [[18.9, 72.7], [18.9, 73.1], [19.4, 73.1], [19.4, 72.7]];
+  L.polygon([world, CAMPUS], { stroke: false, fillColor: "#14182E", fillOpacity: 0.13, interactive: false }).addTo(map);
+  L.polygon(CAMPUS, { color: "#E0701C", weight: 2.5, opacity: 0.9, fill: false, interactive: false }).addTo(map);
 
   const markers = PLACES.map((p, i) => L.marker([p.lat, p.lng], {
     title: p.name,
+    riseOnHover: true,
     icon: L.divIcon({ className: "pin", html: `<span>${i + 1}</span>`, iconSize: [32, 40], iconAnchor: [16, 40], popupAnchor: [0, -38] }),
-  }).addTo(map).bindPopup(`<strong>${esc(p.name)}</strong><br>${esc(p.note)}<br><a href="${directions(p)}" target="_blank" rel="noopener">Directions ↗</a>`));
+  })
+    .addTo(map)
+    .bindTooltip(esc(p.label || p.name), { permanent: true, direction: p.side || "right", offset: p.side === "left" ? [-14, -22] : [14, -22], className: "pin__label" })
+    .bindPopup(`<small>${String(i + 1).padStart(2, "0")}</small><strong>${esc(p.name)}</strong><p>${esc(p.note)}</p><a href="${directions(p)}" target="_blank" rel="noopener">Directions ↗</a>`, { className: "pin__popup", maxWidth: 260 }));
 
-  map.fitBounds(L.featureGroup(markers).getBounds(), { padding: [44, 44], maxZoom: 17 });
+  const items = [...list.querySelectorAll(".place")];
+  const setActive = (i) => {
+    items.forEach((li, j) => li.classList.toggle("is-active", j === i));
+    markers.forEach((m, j) => m.getElement()?.classList.toggle("is-active", j === i));
+  };
+  markers.forEach((m, i) => m.on("popupopen", () => setActive(i)).on("popupclose", () => setActive(-1)));
+
+  const bounds = L.featureGroup(markers).getBounds();
+  const fitAll = () => map.fitBounds(bounds, { padding: [48, 48], maxZoom: 17 });
+  fitAll();
+
+  // "All places" button to reset the view
+  const Reset = L.Control.extend({
+    options: { position: "topright" },
+    onAdd() {
+      const b = L.DomUtil.create("button", "map__reset");
+      b.type = "button";
+      b.innerHTML = '<span aria-hidden="true">⤢</span> All places';
+      L.DomEvent.disableClickPropagation(b);
+      L.DomEvent.on(b, "click", () => { map.closePopup(); fitAll(); });
+      return b;
+    },
+  });
+  map.addControl(new Reset());
 
   list.addEventListener("click", (e) => {
     const btn = e.target.closest(".place__btn");
@@ -57,6 +89,6 @@ const CAMPUS = [[19.12385,72.90864],[19.12457,72.90843],[19.12514,72.90833],[19.
     const m = markers[Number(btn.dataset.i)];
     if (window.matchMedia("(max-width: 980px)").matches) el.scrollIntoView({ behavior: "smooth", block: "center" });
     map.flyTo(m.getLatLng(), 17, { duration: 0.8 });
-    m.openPopup();
+    map.once("moveend", () => m.openPopup());
   });
 })();
