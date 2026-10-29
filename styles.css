@@ -455,6 +455,77 @@ em { font-style: italic; }
 .itinerary__note { margin-top: 28px; font-size: 14.5px; color: var(--ink-3); max-width: 46em; }
 .itinerary__note strong { color: var(--chinar); font-weight: 700; letter-spacing: .04em; }
 
+/* visit page hero: short, so the itinerary shows first on phones */
+.hero--visit { padding-bottom: clamp(8px, 2vw, 24px); }
+.hero--visit + .section { padding-top: clamp(48px, 7vw, 96px); }
+
+/* day schedule (IIT Bombay visit) */
+.sched { list-style: none; margin: 16px 0 0; padding: 0; border-top: 1px solid var(--line); max-width: 46em; }
+.sched li { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 4px 20px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.sched time { font-size: 14.5px; font-weight: 700; color: var(--chinar); padding-top: 2px; }
+.sched div { color: var(--ink-2); }
+.sched b { color: var(--ink); font-weight: 600; }
+.sched small { display: block; margin-top: 2px; font-size: 14px; color: var(--ink-3); }
+.sched small::before { content: "↳ "; color: var(--saffron); }
+.sched__meal time, .sched__meal b { color: var(--ink-3); font-weight: 600; }
+
+/* ---------- Hosting J&K (home) ---------- */
+.hosting { border-top: 1px solid var(--line); }
+.hosting__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.week { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-top: 1.5px solid var(--ink); }
+.week li { padding: 20px 16px 22px 0; border-bottom: 1px solid var(--line); }
+.week li + li { padding-left: 16px; border-left: 1px solid var(--line); }
+.week small { display: block; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--chinar); }
+.week strong { display: block; margin-top: 6px; font: 300 44px/.95 var(--serif); letter-spacing: -.04em; }
+.week span { display: block; margin-top: 10px; font: 400 17px/1.25 var(--serif); }
+.week li:first-child strong, .week li:last-child strong { color: var(--lake); }
+.qrcard {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(20px, 3vw, 36px); align-items: center;
+  margin-top: clamp(36px, 5vw, 56px); padding: clamp(20px, 3vw, 28px);
+  border: 1px solid var(--line); border-radius: 22px; background: #FBF7F0;
+}
+.qrcard img { width: 168px; height: 168px; border-radius: 12px; background: #fff; padding: 8px; border: 1px solid var(--line); }
+.qrcard h3 { font: 400 clamp(24px, 2.4vw, 32px)/1.15 var(--serif); letter-spacing: -.015em; }
+.qrcard p { margin-top: 8px; color: var(--ink-2); }
+.qrcard a { color: var(--lake); text-underline-offset: 3px; overflow-wrap: anywhere; }
+
+/* ---------- Campus map ---------- */
+.campus { border-top: 1px solid var(--line); }
+.campus__grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 36px); align-items: start; }
+.campus__map {
+  height: 560px; border-radius: 22px; overflow: hidden; position: relative; z-index: 0;
+  background: var(--paper-2); border: 1px solid var(--line);
+  box-shadow: 0 30px 60px -34px rgba(20, 24, 46, .5);
+}
+.campus__fallback { padding: 24px; color: var(--ink-2); }
+.campus .leaflet-container { font: 400 14px/1.45 var(--sans); }
+.campus .leaflet-popup-content-wrapper { border-radius: 14px; }
+.campus .leaflet-popup-content a { color: var(--lake); font-weight: 600; }
+.pin span {
+  position: relative; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%;
+  background: var(--ink); border: 2px solid var(--paper); box-shadow: 0 6px 14px -4px rgba(20, 24, 46, .6);
+  color: var(--paper); font: 700 14px/1 var(--sans);
+}
+.pin span::after {
+  content: ""; position: absolute; left: 50%; bottom: -9px; transform: translateX(-50%);
+  border: 6px solid transparent; border-top: 7px solid var(--ink);
+}
+.places { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--ink); }
+.place { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--line); }
+.place__btn {
+  flex: 1; display: flex; align-items: flex-start; gap: 14px; text-align: left;
+  padding: 14px 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer;
+}
+.place__btn strong { display: block; font: 500 19px/1.2 var(--serif); }
+.place__btn small { display: block; margin-top: 3px; font-size: 14px; color: var(--ink-3); }
+.place__btn:hover strong { color: var(--chinar); }
+.place__n {
+  flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--ink); color: var(--paper); font-size: 13.5px; font-weight: 700;
+}
+.place__dir { flex: none; font-size: 13.5px; font-weight: 600; color: var(--lake); text-decoration: none; white-space: nowrap; padding: 8px 0; }
+.place__dir:hover { text-decoration: underline; text-underline-offset: 3px; }
+
 /* ---------- Travel guidelines ---------- */
 .travel { border-top: 1px solid var(--line); }
 .travel__head { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: end; margin-bottom: clamp(44px, 6vw, 72px); }
@@ -538,6 +609,10 @@ em { font-style: italic; }
   .stat:nth-child(2n) { border-right: 0; padding-left: 18px !important; }
   .plist li { grid-template-columns: 44px 1fr; gap: 4px 16px; }
   .plist__name, .plist__en { grid-column: 2; text-align: left; }
+  .campus__grid { grid-template-columns: 1fr; }
+  .campus__map { height: 460px; }
+  .week { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .week li:nth-child(4n + 1) { padding-left: 0; border-left: 0; }
 }
 @media (max-width: 720px) {
   body { font-size: 16px; }
@@ -575,6 +650,18 @@ em { font-style: italic; }
   .day__date { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
   .day__date strong { margin-top: 0; font-size: 52px; order: -1; }
   .day__date span { margin-top: 0; }
+  .sched li { grid-template-columns: 1fr; }
+  .hero--visit .ticket { display: none; }
+  .hero--visit { padding-top: 32px; }
+  .hero--visit .hero__title { font-size: 40px; margin-top: 16px; }
+  .hero--visit .hero__actions { display: none; }
+  .hero--visit + .section { padding-top: 40px; }
+  .campus__map { height: 380px; border-radius: 16px; }
+  .week { grid-template-columns: 1fr 1fr; }
+  .week li:nth-child(n) { padding-left: 0; border-left: 0; padding-right: 12px; }
+  .week li:nth-child(2n) { padding-left: 16px; border-left: 1px solid var(--line); }
+  .qrcard { grid-template-columns: 1fr; justify-items: start; }
+  .hosting__actions .btn { width: 100%; justify-content: center; }
   .delegates__empty { grid-template-columns: 1fr; }
   .flagoff__row { grid-template-columns: 1fr; }
   .flagoff__side { order: -1; }
